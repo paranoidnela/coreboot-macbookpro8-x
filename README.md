@@ -1,104 +1,23 @@
-coreboot README
-===============
+# coreboot for Macbook Pro 8,2 - 8,3
+I've implemented `macbookpro-8_2` and `macbookpro-8_3` support for coreboot, forked off of 01 Mar. 2022 coreboot head w/ 8,1 PR of the time.
 
-coreboot is a Free Software project aimed at replacing the proprietary BIOS
-(firmware) found in most computers.  coreboot performs a little bit of
-hardware initialization and then executes additional boot logic, called a
-payload.
+This **may** need tweaking to work with Macbooks that still have functional dGPUs, but all my boards have been disabled using [`GMUX_gmux.jed`](https://github.com/paranoidnela/macbookpro8-2-resources/blob/main/GMUX_gmux.rar).
 
-With the separation of hardware initialization and later boot logic,
-coreboot can scale from specialized applications that run directly
-firmware, run operating systems in flash, load custom
-bootloaders, or implement firmware standards, like PC BIOS services or
-UEFI. This allows for systems to only include the features necessary
-in the target application, reducing the amount of code and flash space
-required.
+# Notes
+I've posted more information and resources on these machines over on [a dedicated Macbook Pro 8,2 resources repository](https://github.com/paranoidnela/macbookpro8-2-resources)
 
-coreboot was formerly known as LinuxBIOS.
+Relevant files for this support are in `src/mainboard/apple/macbookpro8_1`.
 
+This repository is based of a dump from an old drive. It is not a recent fork, and is from the middle of development, while it does boot, it may not have EFI support. My first bootable build were branced off the Macbook Air 4,2 tree, but once the 8,1 PR became a viable base, I ported over my 8,2/8,3 fixes.
 
-Payloads
---------
+While this tree might not be needed anymore due to the 8,1 PR, I did want to post my work to preserve, if there is anything valuable.
 
-After the basic initialization of the hardware has been performed, any
-desired "payload" can be started by coreboot.
+Note that there might be interesting information in [the blob research in other repository](https://github.com/paranoidnela/macbookpro8-2-resources/tree/main/blobs).
+  
+# Credits  
+The coreboot team and especially Evgeny Zinoviev for their work, without whom this would not have been possible.
 
-See <https://www.coreboot.org/Payloads> for a list of supported payloads.
-
-
-Supported Hardware
-------------------
-
-coreboot supports a wide range of chipsets, devices, and mainboards.
-
-For details please consult:
-
- * <https://www.coreboot.org/Supported_Motherboards>
-
-
-Build Requirements
-------------------
-
- * make
- * gcc / g++
-   Because Linux distribution compilers tend to use lots of patches. coreboot
-   does lots of "unusual" things in its build system, some of which break due
-   to those patches, sometimes by gcc aborting, sometimes - and that's worse -
-   by generating broken object code.
-   Two options: use our toolchain (eg. make crosstools-i386) or enable the
-   `ANY_TOOLCHAIN` Kconfig option if you're feeling lucky (no support in this
-   case).
- * iasl (for targets with ACPI support)
- * pkg-config
- * libssl-dev (openssl)
-
-Optional:
-
- * doxygen (for generating/viewing documentation)
- * gdb (for better debugging facilities on some targets)
- * ncurses (for `make menuconfig` and `make nconfig`)
- * flex and bison (for regenerating parsers)
-
-
-Building coreboot
------------------
-
-Please consult <https://www.coreboot.org/Build_HOWTO> for details.
-
-
-Testing coreboot Without Modifying Your Hardware
-------------------------------------------------
-
-If you want to test coreboot without any risks before you really decide
-to use it on your hardware, you can use the QEMU system emulator to run
-coreboot virtually in QEMU.
-
-Please see <https://www.coreboot.org/QEMU> for details.
-
-
-Website and Mailing List
-------------------------
-
-Further details on the project, a FAQ, many HOWTOs, news, development
-guidelines and more can be found on the coreboot website:
-
-  <https://www.coreboot.org>
-
-You can contact us directly on the coreboot mailing list:
-
-  <https://www.coreboot.org/Mailinglist>
-
-
-Copyright and License
----------------------
-
-The copyright on coreboot is owned by quite a large number of individual
-developers and companies. Please check the individual source files for details.
-
-coreboot is licensed under the terms of the GNU General Public License (GPL).
-Some files are licensed under the "GPL (version 2, or any later version)",
-and some files are licensed under the "GPL, version 2". For some parts, which
-were derived from other projects, other (GPL-compatible) licenses may apply.
-Please check the individual source files for details.
-
-This makes the resulting coreboot images licensed under the GPL, version 2.
+# TODO
+- properly branch off to different config, this work is based off of Evgeny Zinoviev's efforts on the macbook air 4,2 and macbook pro 8,1 as such it uses the macbookpro8_1 mainboard that they created and I just patched the PR to work with the boards in the bigger machines.
+- document what works and what doesn't, even I don't remember nor do I remember what were all the steps involved, I know that one of the hardest things to overcome was the iGPU support because it works quite differently than the 13 inch variant of the laptop
+- update this tree to modern coreboot, merge enhancements coming from the 8,1 PR and turn it into a mergeable commit
